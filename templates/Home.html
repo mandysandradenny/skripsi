@@ -1,0 +1,30 @@
+{% extends "template.html" %} {% block main %}
+<div class="row" id="nav">
+  <h2>HOME</h2>
+</div>
+<div class="row" id="main-content">
+  <div class="container">
+    <h2>
+      Penerapan Metode Gated Recurrent Unit dan Metode Probabilistik Sederhana
+    </h2>
+  </div>
+
+  <div class="containerFile">
+    <h5 style="text-align: left; background-color: #d9d9d9">File</h5>
+    <div class="containerFileUpload">
+      <form action="/home" method="post" enctype="multipart/form-data">
+        <input
+          class="custom-file-upload"
+          type="file"
+          accept=".xls,.xlsx"
+          id="fileInput"
+          name="fileInput"
+          required
+        />
+        <button type="reset">Reset</button>
+        <button type="submit">Upload</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

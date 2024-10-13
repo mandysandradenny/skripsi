@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+
+    <style>
+      #sidebarMenu {
+        position: fixed;
+        padding-top: 50px;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 100vh; /* Set sidebar height to 100vh (viewport height) */
+        display: flex;
+        flex-direction: column;
+      }
+
+      #sidebarMenu a {
+        color: black;
+        font-size: 19px;
+        padding: 9px;
+        display: block;
+        text-decoration: none;
+      }
+
+      .list-group-item {
+        border-bottom: none;
+      }
+
+      h1 {
+        background-color: #f3f1f1;
+        padding: 10px;
+        font-size: 25px;
+        text-align: center;
+      }
+
+      #main-navbar {
+        background-color: #711a14 !important;
+        display: flex;
+        height: 50px;
+        padding-top: 110px;
+        /* margin-left: 240px; */
+        color: white;
+      }
+
+      #main-content {
+        background-color: #d38339;
+        box-sizing: border-box;
+        margin-left: 250px;
+        padding: 20px;
+        min-height: 90vh;
+        justify-content: center;
+        align-items: center;
+        /* padding-left: 100px; */
+      }
+
+      #nav {
+        background-color: #711a14;
+        margin-left: 250px;
+        padding: 20px;
+        color: white;
+      }
+
+      .container {
+        background-color: #d9d9d9; /* Warna coklat tua */
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 0px 5px rgba(126, 7, 7, 0.3);
+        text-align: center;
+      }
+
+      .containerFile {
+        background-color: #711a14;
+        box-shadow: 0px 0px 5px rgb(255, 255, 255);
+        border-width: 20px;
+        padding: 40px;
+        border-radius: 10px;
+        text-align: center;
+      }
+
+      .containerFileUpload {
+        background-color: #d38339;
+        padding: 30px;
+        border-radius: 10px;
+      }
+
+      .custom-file-upload {
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 6px 12px;
+      }
+    </style>
+  </head>
+
+  <header>
+    <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+      <div class="position-sticky">
+        <h1>Main Menu</h1>
+        <br />
+        <div class="list-group list-group-flush mx-3 mt-4">
+          <a
+            href="/home"
+            class="list-group-item list-group-item-action py-2 ripple"
+            aria-current="true"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-grid"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5z"
+              />
+            </svg>
+            <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>HOME</span>
+          </a>
+          <br />
+          <a
+            href="/list"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-table"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 2h-4v3h4zm0 4h-4v3h4zm0 4h-4v3h3a1 1 0 0 0 1-1zm-5 3v-3H6v3zm-5 0v-3H1v2a1 1 0 0 0 1 1zm-4-4h4V8H1zm0-4h4V4H1zm5-3v3h4V4zm4 4H6v3h4z"
+              />
+            </svg>
+            <i class="fas fa-chart-line fa-fw me-3"></i>
+            <span>List Data Penjualan</span>
+          </a>
+          <br />
+          <a
+            href="/algo"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-graph-up"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"
+              />
+            </svg>
+            <i class="fas fa-lock fa-fw me-3"></i>
+            <span>Algoritma</span>
+          </a>
+          <br />
+          <a
+            href="/pred"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-broadcast"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M3.05 3.05a7 7 0 0 0 0 9.9.5.5 0 0 1-.707.707 8 8 0 0 1 0-11.314.5.5 0 0 1 .707.707m2.122 2.122a4 4 0 0 0 0 5.656.5.5 0 1 1-.708.708 5 5 0 0 1 0-7.072.5.5 0 0 1 .708.708m5.656-.708a.5.5 0 0 1 .708 0 5 5 0 0 1 0 7.072.5.5 0 1 1-.708-.708 4 4 0 0 0 0-5.656.5.5 0 0 1 0-.708m2.122-2.12a.5.5 0 0 1 .707 0 8 8 0 0 1 0 11.313.5.5 0 0 1-.707-.707 7 7 0 0 0 0-9.9.5.5 0 0 1 0-.707zM10 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0"
+              />
+            </svg>
+            <i class="fas fa-lock fa-fw me-3"></i>
+            <span>Prediksi Penjualan</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <body>
+    {% block main %} {% endblock %}
+  </body>
+</html>

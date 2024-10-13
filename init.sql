@@ -1,0 +1,8 @@
+CREATE DATABASE skripsi;
+USE skripsi;
+CREATE TABLE sales (
+    no INT PRIMARY KEY AUTO_INCREMENT,
+    date DATE NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    qty INT NOT NULL
+);

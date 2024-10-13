@@ -1,0 +1,5 @@
+openpyxl
+scikit-learn
+tensorflow
+flask
+pymysql
