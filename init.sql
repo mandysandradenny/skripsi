@@ -6,3 +6,9 @@ CREATE TABLE sales (
     name VARCHAR(255) NOT NULL,
     qty INT NOT NULL
 );
+CREATE TABLE predict (
+    no INT PRIMARY KEY AUTO_INCREMENT,
+    date DATE NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    qty INT NOT NULL
+);

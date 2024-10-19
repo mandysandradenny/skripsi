@@ -36,3 +36,16 @@ def batch_insert(sql, df):
     conn.commit()
     curs.close()
     conn.close()
+
+def get_data(table, month=0, year=0):
+    conn = open_db()
+    curs = conn.cursor()
+    if month and year:
+        sql = f"SELECT date, name, qty FROM {table} WHERE EXTRACT(MONTH FROM date) = {month} AND EXTRACT(YEAR FROM date) = {year}"
+    else:
+        sql = f'SELECT date, name, qty FROM {table}'
+    curs.execute(sql)
+    res = curs.fetchall()
+    curs.close()
+    conn.close()
+    return res
