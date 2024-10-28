@@ -37,11 +37,13 @@ def batch_insert(sql, df):
     curs.close()
     conn.close()
 
-def get_data(table, month=0, year=0):
+def get_data(table="sales", month=0, year=0, query=""):
     conn = open_db()
     curs = conn.cursor()
     if month and year:
         sql = f"SELECT date, name, qty FROM {table} WHERE EXTRACT(MONTH FROM date) = {month} AND EXTRACT(YEAR FROM date) = {year}"
+    elif query:
+        sql = query
     else:
         sql = f'SELECT date, name, qty FROM {table}'
     curs.execute(sql)
@@ -49,3 +51,12 @@ def get_data(table, month=0, year=0):
     curs.close()
     conn.close()
     return res
+
+def insert_users(username, password):
+    conn = open_db()
+    curs = conn.cursor()
+    sql = f"INSERT INTO user (username, password) VALUE ('{username}', '{password}')"
+    curs.execute(sql)
+    conn.commit()
+    curs.close()
+    conn.close()

@@ -1,0 +1,60 @@
+{% extends 'base.html' %} {% block main %}
+
+<div style="display: flex; justify-content: end; align-items: center">
+  <button onclick="window.history.back();" class="btn btn-secondary">Back</button>
+</div>
+
+<div id="main-content_DDL">
+  {% set year, month_num = month.split('-') %} {% set months = ['January',
+  'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+  'October', 'November', 'December'] %}
+  <h3>
+    Hasil Prediksi {{ months[month_num|int - 1] }} {{ year }} Ukuran {{ ukuran }}
+  </h3>
+  {% if chart %}
+  <img src="{{ chart }}" alt="Grafik Qty" style="width: 90vw; max-width: 700px;" />
+  {% endif %}
+  <br /><br />
+  <h6>Jumlah Produk Dibeli Pada Setiap Pesanan</h6>
+  <table class="table table-bordered">
+    <tr>
+      <th>Order</th>
+      {% for x in range(data | length) %} <td>{{ x+1 }}</td> {% endfor %}
+    </tr>
+    <tr>
+      <th>Produk Dibeli</th>
+      {% for x in data %} <td>{{ x[0] }}</td> {% endfor %}
+    </tr>
+  </table>
+
+  <h5>Informasi Manajemen Inventory</h5>
+  {% if inventory_management %}
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th style="text-align: center">Safety Stock</th>
+        <th style="text-align: center">Reorder Point</th>
+        <th style="text-align: center">Stock Optimal</th>
+        <th style="text-align: center">Ekspektasi Kekurangan Barang</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: center">{{ inventory_management['SS'] }}</td>
+        <td style="text-align: center">
+          {{ inventory_management['ReorderPoint'] }}
+        </td>
+        <td style="text-align: center">
+          {{ inventory_management['OptimalStock'] }}
+        </td>
+        <td style="text-align: center">
+          {{ inventory_management['Ekspektasi'] }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+
+<br />
+{% endblock %}

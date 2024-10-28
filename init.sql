@@ -8,7 +8,12 @@ CREATE TABLE sales (
 );
 CREATE TABLE predict (
     no INT PRIMARY KEY AUTO_INCREMENT,
-    date DATE NOT NULL,
     name VARCHAR(255) NOT NULL,
-    qty INT NOT NULL
+    qty INT NOT NULL,
+    month VARCHAR(255) NOT NULL
+);
+CREATE TABLE user (
+    no INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
 );

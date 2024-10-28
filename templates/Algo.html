@@ -1,9 +1,23 @@
-{% extends "template.html" %}
-{% block main %}
-<div id="nav">
-    <h2>Algoritma</h2>
-</div>
-<div id="main-content">
-    test
+{% extends 'base.html' %} {% block main %}
+
+<div class="container-fluid">
+  <h3 style="text-align: center">Hasil Evaluasi Model Gated Recurrent Unit</h3>
+  <br />
+  <h5>MAE: 38.03</h5>
+  <h5>RMSE: 57.23</h5>
+  <div class="row justify-content-center mt-5">
+    <img
+      src="{{url_for('static', filename='Grafik1.png')}}"
+      style="width: 90vw; max-width: 850px"
+      alt=""
+    />
+  </div>
+  <div class="row justify-content-center mt-5">
+    <img
+      src="{{url_for('static', filename='Grafik2.png')}}"
+      style="width: 90vw; max-width: 850px"
+      alt=""
+    />
+  </div>
 </div>
 {% endblock %}

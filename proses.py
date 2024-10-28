@@ -1,12 +1,19 @@
 import numpy as np
-from scipy.stats import norm
+import scipy.stats as stats
 import pandas as pd
 import re
 import joblib
 from datetime import datetime, timedelta 
 from sklearn.impute import KNNImputer
 from sklearn.preprocessing import RobustScaler, LabelEncoder, StandardScaler
-from tensorflow.keras.models import Sequential, load_model
+from tensorflow.keras.models import Sequential, load_model # type: ignore
+import matplotlib
+matplotlib.use('Agg')  # Non-interactive backend
+import matplotlib.pyplot as plt
+import io
+import base64
+import hashlib
+from db import insert_users
 
 
 def preprocessing(file):
@@ -75,19 +82,18 @@ def preprocessing(file):
     # Pisahkan kolom numerik yang akan diimputasi
     numeric_data = df_lengkap[['Jumlah Produk Dibeli']]
 
-    # Scaling data
-    scaler = StandardScaler()
-    scaled_data = scaler.fit_transform(numeric_data)
+    # # Scaling data
+    # scaler = StandardScaler()
+    # scaled_data = scaler.fit_transform(numeric_data)
 
-    imputer = KNNImputer(n_neighbors=3)
-    imputed_data = imputer.fit_transform(df_lengkap[['Jumlah Produk Dibeli']])
+    imputer = KNNImputer(n_neighbors=11)
+    imputed_data = imputer.fit_transform(numeric_data)
     imputed_series = pd.Series(imputed_data.ravel())
 
-    # df_lengkap['Jumlah Produk Dibeli'].fillna(imputed_series, inplace=True)
     df_lengkap.fillna({'Jumlah Produk Dibeli': imputed_series}, inplace=True)
 
     df_lengkap['Ukuran'] = df_lengkap['Nama Produk'].apply(lambda product_name: 
-    re.search(r'\d+[.,]?\d*\s*[×xX]\s*\d+[.,]?\d*(?:½)?\s*[×xX]\s*\d+[.,]?\d*\s*(cm)?', product_name, re.IGNORECASE).group(0).strip().replace('×', 'x').replace('X', 'x').replace('Cm', 'cm').replace('CM', 'cm')
+    re.search(r'\d+[.,]?\d*\s*[×xX]\s*\d+[.,]?\d*(?:½)?\s*[×xX]\s*\d+[.,]?\d*\s*(cm)?', product_name, re.IGNORECASE).group(0).strip().replace('×', 'x').replace('X', 'x').replace('Cm', 'cm').replace('CM', 'cm').replace(' ', '')
     if re.search(r'\d+[.,]?\d*\s*[×xX]\s*\d+[.,]?\d*(?:½)?\s*[×xX]\s*\d+[.,]?\d*\s*(cm)?', product_name, re.IGNORECASE) 
     else np.nan)
 
@@ -106,12 +112,6 @@ def preprocessing(file):
     return df_lengkap
 
 def predict_model(data):
-    # le = LabelEncoder()
-    # data['Ukuran'] = le.fit_transform(data['Ukuran'])
-
-    # scaler = RobustScaler()
-    # data[['Jumlah Produk Dibeli']] = scaler.fit_transform(data[['Jumlah Produk Dibeli']])
-    
     # Load model GRU yang sudah disimpan
     model = load_model('model/model_gru.keras')
 
@@ -122,21 +122,21 @@ def predict_model(data):
     le = LabelEncoder()
     le.classes_ = np.load('model/classes.npy', allow_pickle=True)
 
-    # Identifikasi ukuran baru yang tidak dikenal (tidak ada di le.classes_)
-    unknown_sizes = ~data['Ukuran'].isin(le.classes_)
+    # # Identifikasi ukuran baru yang tidak dikenal (tidak ada di le.classes_)
+    # unknown_sizes = ~data['Ukuran'].isin(le.classes_)
 
-    # Tampilkan ukuran yang tidak dikenal (jika ada)
-    if unknown_sizes.any():
-        print(f"Ukuran baru yang tidak dikenal ditemukan: {data.loc[unknown_sizes, 'Ukuran'].unique()}")
+    # # Tampilkan ukuran yang tidak dikenal (jika ada)
+    # if unknown_sizes.any():
+    #     print(f"Ukuran baru yang tidak dikenal ditemukan: {data.loc[unknown_sizes, 'Ukuran'].unique()}")
 
-    # Filter data yang mengandung ukuran yang dikenal
-    data = data[~unknown_sizes].copy()
+    # # Filter data yang mengandung ukuran yang dikenal
+    # data = data[~unknown_sizes].copy()
 
     # LabelEncoder pada kolom 'Ukuran'
     data['Ukuran'] = le.transform(data['Ukuran'])
 
     # Misalnya, data_new adalah DataFrame baru yang ingin diprediksi
-    seq_length = 30  # Harus sama dengan yang digunakan saat pelatihan
+    seq_length = 14  # Harus sama dengan yang digunakan saat pelatihan
     X_new = []
     dates = []  # List untuk menyimpan tanggal
 
@@ -174,24 +174,174 @@ def predict_model(data):
     # Mendapatkan tanggal terakhir dari data yang diupload
     tanggal_akhir = pd.to_datetime(dates).max()
 
-    # prediksi untuk 14 hari kedepan
-    tanggal_prediksi = pd.date_range(start=tanggal_akhir + pd.Timedelta(days=1), periods=14)
+    # Ambil hasil prediksi 30 data dan jika ada nilai negatif diubah menjadi 0
+    # predicted_jumlah_produk = np.where(predicted_jumlah_produk_load[:30].flatten() < 0, 0, predicted_jumlah_produk_load[:30].flatten())
+    predicted_jumlah_produk = np.where(predicted_jumlah_produk_load.flatten() < 0, 0, predicted_jumlah_produk_load.flatten())
 
-    # Mengambil hanya 14 hari dari hasil prediksi
-    predicted_jumlah_produk = predicted_jumlah_produk_load[:14].flatten()
-    predicted_ukuran = predicted_ukuran_asli_load[:14]
+    # Pastikan panjang `predicted_jumlah_produk` dan `predicted_ukuran_asli_load` sama
+    min_length = min(len(predicted_jumlah_produk), len(predicted_ukuran_asli_load))
+
+    # Potong keduanya agar sama panjang
+    predicted_jumlah_produk = predicted_jumlah_produk[:min_length]
+    predicted_ukuran = predicted_ukuran_asli_load[:min_length]
+    
+    # Tanggal Prediksi
+    # tanggal_prediksi = pd.date_range(start=tanggal_akhir + pd.Timedelta(days=1), periods=min_length).to_period('M')
+    # Tentukan bulan dan tahun prediksi (bulan setelah tanggal_akhir)
+    bulan_tahun_prediksi = (tanggal_akhir + pd.Timedelta(days=1)).replace(day=1).strftime('%Y-%m')
+
+    # Mengisi kolom 'Tanggal Pembayaran' dengan bulan_tahun_prediksi yang diulang sesuai panjang prediksi
+    tanggal_prediksi = [bulan_tahun_prediksi] * min_length
+
+    # predicted_ukuran = predicted_ukuran_asli_load[:30]
     
     # Membuat DataFrame untuk membandingkan hasil prediksi
     hasil_prediksi_load = pd.DataFrame({
-        'Tanggal Pembayaran': tanggal_prediksi,  # Menggunakan tanggal dari data
+        'Tanggal Pembayaran': tanggal_prediksi,
         'Ukuran Prediksi': predicted_ukuran,
         'Jumlah Produk Dibeli Prediksi': predicted_jumlah_produk.flatten()
     })
 
     return hasil_prediksi_load
 
+# Grafik menggunakan matplotlib
+def create_chart(ukuran, qty_data):
+    plt.figure(figsize=(6, 4))
+    plt.bar(range(1, len(qty_data) + 1), qty_data, color='skyblue')  # Membuat bar chart dengan X mulai dari 1, 2, 3, dst.
 
+    plt.title(f"Prediksi untuk Ukuran {ukuran}")
+    plt.xlabel("Order")
+    plt.ylabel("Produk Dibeli")
 
+    plt.xticks(range(1, len(qty_data) + 1))  # Menampilkan ticks di sumbu X mulai dari 1, 2, 3, dst.
 
+    # Simpan grafik ke dalam buffer dan encode menjadi base64
+    buffer = io.BytesIO()  # Membuat buffer di memory
+    plt.savefig(buffer, format="png")  # Simpan grafik ke buffer dengan format PNG
+    buffer.seek(0)  # Reset pointer buffer ke awal
+    image_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')  # Encode buffer ke base64
+    plt.close()  # Tutup figure untuk membebaskan memori
 
+    return f"data:image/png;base64,{image_base64}"
 
+def inventory_management(data):
+    # Nilai z untuk tingkat kepercayaan 95%
+    Za = 1.65
+    # Lead time dalam hari (misalnya 2 hari)
+    L = 2
+
+    # Buat data frame
+    data = pd.DataFrame({
+        'Jumlah Produk Dibeli Prediksi': [x[1] for x in data],
+        'Ukuran Prediksi': [x[0] for x in data]
+    })
+
+    # Loop melalui setiap produk
+    for ukuran in np.unique(data['Ukuran Prediksi']):
+
+        # Filter data berdasarkan ukuran produk
+        produk_data = data[data['Ukuran Prediksi'] == ukuran]
+
+        # Data yang diprediksi untuk produk tertentu (jumlah produk dibeli)
+        y_pred_product = produk_data['Jumlah Produk Dibeli Prediksi'].values
+
+        # Hitung standar deviasi dari error prediksi
+        S = np.std(y_pred_product)
+
+        # Hitung standar deviasi selama lead time (dalam hari)
+        # S_L = S * np.sqrt(L)
+        S_L = S * np.sqrt(L)
+
+        # Hitung nilai N
+        phi = stats.norm.pdf(Za)
+        Psi = stats.norm.cdf(Za) * Za
+        N = S_L * (Psi - phi)
+
+        # Hitung cadangan pengaman (SS)
+        SS = Za * S_L
+
+        # Rata-rata permintaan selama lead time (dalam hari)
+        DL = np.mean(y_pred_product) * L
+
+        # Hitung saat pemesanan ulang (r)
+        r = DL + SS
+
+        # Hitung tingkat pelayanan (η)
+        eta = 1 - (N / DL) if DL != 0 else 0  # Menghindari pembagian dengan nol
+
+        # Hitung stok optimal
+        optimal_stock = SS + r
+
+        # Simpan hasil dalam dictionary
+        return {
+            "SS": round(SS),
+            "ReorderPoint": round(r),
+            "OptimalStock": round(optimal_stock),
+            "Ekspektasi": round(N)
+        }
+    
+def inventory_raw(data):
+    # Nilai z untuk tingkat kepercayaan 95%
+    Za = 1.65
+    # Lead time dalam hari (misalnya 2 hari)
+    L = 7
+
+    # Buat data frame
+    data = pd.DataFrame({
+        'Jumlah Produk Dibeli Prediksi': [x[1] for x in data],
+        'Ukuran Prediksi': [x[0] for x in data]
+    })
+
+    # Loop melalui setiap produk
+    for ukuran in np.unique(data['Ukuran Prediksi']):
+
+        # Filter data berdasarkan ukuran produk
+        produk_data = data[data['Ukuran Prediksi'] == ukuran]
+
+        # Data yang diprediksi untuk produk tertentu (jumlah produk dibeli)
+        y_pred_product = produk_data['Jumlah Produk Dibeli Prediksi'].values
+
+        # Hitung standar deviasi dari error prediksi
+        S = np.std(y_pred_product)
+
+        # Hitung standar deviasi selama lead time (dalam hari)
+        # S_L = S * np.sqrt(L)
+        S_L = S * np.sqrt(L)
+
+        # Hitung nilai N
+        phi = stats.norm.pdf(Za)
+        Psi = stats.norm.cdf(Za) * Za
+        N = S_L * (Psi - phi)
+
+        # Hitung cadangan pengaman (SS)
+        SS = Za * S_L
+
+        # Rata-rata permintaan selama lead time (dalam hari)
+        DL = np.mean(y_pred_product) * L
+
+        # Hitung saat pemesanan ulang (r)
+        r = DL + SS
+
+        # Hitung tingkat pelayanan (η)
+        eta = 1 - (N / DL) if DL != 0 else 0  # Menghindari pembagian dengan nol
+
+        # Hitung stok optimal
+        optimal_stock = SS + r
+
+        # Simpan hasil dalam dictionary
+        return {
+            "SS": round(SS),
+            "ReorderPoint": round(r),
+            "OptimalStock": round(optimal_stock),
+            "Ekspektasi": round(N)
+        }
+
+def hashed(password):
+    return hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+def register_user(username:str, password:str):
+    password_hashed = hashed(password)
+    insert_users(username, password_hashed)
+
+# Untuk mendaftarkan user
+# register_user('username', 'password')

@@ -1,30 +1,56 @@
-{% extends "template.html" %} {% block main %}
-<div class="row" id="nav">
-  <h2>HOME</h2>
+{% extends 'base.html' %} {% block main %}
+<div style="display: flex; justify-content: space-between; align-items: center">
+  <p class="d-inline" style="font-weight: bold;">Halo, {{ session['username'] }} &nbsp;</p>
+  <a href="/logout" type="button" class="btn btn-danger ms-2">Logout</a>
 </div>
-<div class="row" id="main-content">
-  <div class="container">
-    <h2>
-      Penerapan Metode Gated Recurrent Unit dan Metode Probabilistik Sederhana
-    </h2>
-  </div>
-
-  <div class="containerFile">
-    <h5 style="text-align: left; background-color: #d9d9d9">File</h5>
-    <div class="containerFileUpload">
-      <form action="/home" method="post" enctype="multipart/form-data">
-        <input
-          class="custom-file-upload"
-          type="file"
-          accept=".xls,.xlsx"
-          id="fileInput"
-          name="fileInput"
-          required
-        />
-        <button type="reset">Reset</button>
-        <button type="submit">Upload</button>
-      </form>
+<br /><br /><br /><br /><br />
+<h1 style="text-align: center; font-weight: bold;">PENERAPAN</h1>
+<br />
+<h2 style="text-align: center; font-weight: bold;">
+  Metode Gated Recurrent Unit dan Metode Probabilistik Sederhana
+</h2>
+<br /><br />
+<div class="container-fluid">
+  <div class="row justify-content-center mt-4">
+    <div
+      class="col-md-4"
+      style="background-color: #711a14; padding: 15px; border-radius: 10px"
+    >
+      <div class="text-center" style="padding: 10px; color: white;">
+        <h4>Upload File</h4>
+      </div>
+      <div
+        class="d-flex justify-content-center"
+        style="
+          background-color: whitesmoke;
+          padding-top: 20px;
+          border-radius: 6px;
+          border: 1px solid;
+        "
+      >
+        <form action="/home" method="post" enctype="multipart/form-data">
+          <input
+            class="custom-file-upload text-center"
+            type="file"
+            accept=".xls,.xlsx"
+            id="fileInput"
+            name="fileInput"
+            style="
+              border: 2px solid #383737;
+              display: inline-block;
+              padding: 6px 12px;
+              border-radius: 6px;
+            "
+            required
+          />
+          <div class="row" style="padding: 10px; justify-content: center;">
+            <button type="reset">Reset</button> &nbsp;
+            <button type="submit">Upload</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
+<br /><br /><br /><br /><br /><br /><br /><br />
 {% endblock %}

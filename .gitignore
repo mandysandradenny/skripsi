@@ -6,6 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
+# File
+templates old/
+model_old/
+inventory.ipynb
+
 # Distribution / packaging
 .Python
 build/

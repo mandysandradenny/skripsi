@@ -1,9 +1,79 @@
-{% extends "template.html" %}
-{% block main %}
-<div id="nav">
-    <h2>Prediksi Penjualan</h2>
+{% extends 'base.html' %} {% block main %}
+<style>
+    .full-height {
+      height: 75vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column; /* Ensure the label and select stack vertically */
+  }
+  .form-select {
+      height: 50px;
+      width: 20vw; /* Set width for the select element */
+      min-width: 200px;
+      padding: 10px; /* Adjust padding as needed */
+  }
+</style>
+<script>
+  function bulan(selectElement) {
+    var selectedValue = selectElement.value;
+    const url = `/pred?month=${encodeURIComponent(selectedValue)}`;
+    if (selectedValue) {
+      window.location.href = url;
+    }
+  }
+  function myukuran(selectElement) {
+    var selectedValue = selectElement.value;
+    var bulan = document.getElementById('bulan').value;
+    const url = `/pred?month=${encodeURIComponent(bulan)}&ukuran=${encodeURIComponent(selectedValue)}`;
+    if (selectedValue) {
+      window.location.href = url;
+    }
+  }
+</script>
+
+<div class="full-height">
+  <h2 class="label" style="margin-bottom: 15px;"> Pilih Bulan dan Ukuran </h2>
+
+  <select id="bulan" class="form-select form-select-lg mb-3 text-center" onchange="bulan(this)">
+    <option value="disable" {% if not ukuran %} selected {% endif %} disabled>Pilih Bulan</option>
+    {% for x in dates %}
+    <option value="{{ x[0] }}" {% if x[0] == month %} selected {% endif %}>{{ x[0] }}</option>
+    {% endfor %}
+  </select>
+
+
+  <select id="ukuran" class="form-select form-select-lg mb-3 text-center" onchange="myukuran(this)">
+    <option value="disable" {% if not ukuran %} selected {% endif %} disabled>Pilih Ukuran</option>
+    {% for x in name %}
+    <option value="{{ x[0] }}" {% if x[0] == ukuran %} selected {% endif %}>{{ x[0] }}</option>
+    {% endfor %}
+  </select>
+<br><br>
+<h4>Informasi Manajemen Inventory Bahan Baku</h4>
+<br>
+  {% if inventory %}
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th style="text-align: center">Safety Stock</th>
+        <th style="text-align: center">Reorder Point</th>
+        <th style="text-align: center">Stock Optimal</th>
+        <th style="text-align: center">Ekspektasi Kekurangan Barang  </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: center">{{ inventory['SS'] }}</td>
+        <td style="text-align: center">{{ inventory['ReorderPoint'] }}</td>
+        <td style="text-align: center">{{ inventory['OptimalStock'] }}</td>
+        <td style="text-align: center">{{ inventory['Ekspektasi'] }}</td>
+      </tr>
+    </tbody>
+    </table>
+    {% endif %}
 </div>
-<div id="main-content">
-    test
-</div>
+
+
+<br /><br /><br />
 {% endblock %}
