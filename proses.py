@@ -15,7 +15,6 @@ import base64
 import hashlib
 from db import insert_users
 
-
 def preprocessing(file):
     df = pd.read_excel(file, skiprows=4)
     # Hapus baris yang punya tanggal pesanan dibatalkan
@@ -33,7 +32,7 @@ def preprocessing(file):
         'Total Pengurangan (IDR)', 'Nama Penawaran Terpakai', 'Tingkatan Promosi Terpakai', 'Diskon Penawaran Terpakai (IDR)', 'Harga Awal (IDR)',
         'Harga Satuan Bundling (IDR)', 'Diskon Produk (IDR)', 'Jumlah Subsidi Tokopedia (IDR)', 'Nilai Kupon Toko Terpakai (IDR)']
 
-    # Drop columns that are not needed
+    # Drop kolom yang tidak digunakan
     df = df.drop(columns = columns_to_drop)
 
     df['Tanggal Pembayaran'] = pd.to_datetime(df['Tanggal Pembayaran'], format='%d-%m-%Y %H:%M:%S').dt.strftime('%d-%m-%Y')
@@ -46,17 +45,16 @@ def preprocessing(file):
     df['nama produk lowercase'] = df['Nama Produk'].str.lower()
 
     pattern = '|'.join(model_tidak_diinginkan)  # Membuat pola regex dari daftar
-    df_filtered = df[~df['nama produk lowercase'].str.contains(pattern, na=False)] # Added na=False to handle potential NaN values
+    df_filtered = df[~df['nama produk lowercase'].str.contains(pattern, na=False)] # na=False to handle potential NaN values
 
     df = df_filtered.drop(columns=['nama produk lowercase'])
 
-    # Get today's date
+    # Mengambil tanggal terbaru
     today = df.iloc[0]['Tanggal Pembayaran']
 
-    # Calculate the first day of the current month
     first_day = today.replace(day=1)
 
-    # Calculate the last day of the previous month
+    # Menentukan hari terakhir dari bulan sebelumnya
     last_day = first_day + timedelta(days=31)
     last_day = last_day.replace(day=1) - timedelta(days=1)
 
@@ -72,19 +70,13 @@ def preprocessing(file):
     # Buat DataFrame baru dengan tanggal lengkap
     df_lengkap = pd.DataFrame({'Tanggal Pembayaran': date_range})
 
-    # Gabungkan dengan DataFrame asli, isi nilai yang hilang dengan 0
     df_lengkap = df_lengkap.merge(df, on='Tanggal Pembayaran', how='left')
-    # df_lengkap = df_lengkap.merge(df, on='Tanggal Pembayaran', how='left').fillna(0)
 
     # Mengisi nilai yang hilang pada kolom 'Nama Produk' menggunakan forward fill dan backward fill
     df_lengkap['Nama Produk'] = df_lengkap['Nama Produk'].fillna(method='ffill').fillna(method='bfill')
 
     # Pisahkan kolom numerik yang akan diimputasi
     numeric_data = df_lengkap[['Jumlah Produk Dibeli']]
-
-    # # Scaling data
-    # scaler = StandardScaler()
-    # scaled_data = scaler.fit_transform(numeric_data)
 
     imputer = KNNImputer(n_neighbors=11)
     imputed_data = imputer.fit_transform(numeric_data)
@@ -103,12 +95,6 @@ def preprocessing(file):
 
     df_lengkap['Tanggal Pembayaran'] = pd.to_datetime(df_lengkap['Tanggal Pembayaran']).dt.strftime('%Y-%m-%d')
 
-    # # Mengelompokan total penjualan produk pada tanggal yang sama dan ukuran yang sama
-    # df_lengkap = df_lengkap.groupby(['Tanggal Pembayaran', 'Ukuran']).agg({
-    #     'Jumlah Produk Dibeli': 'sum',
-    # }).reset_index()
-    # print(df_lengkap)
-
     return df_lengkap
 
 def predict_model(data):
@@ -122,29 +108,18 @@ def predict_model(data):
     le = LabelEncoder()
     le.classes_ = np.load('model/classes.npy', allow_pickle=True)
 
-    # # Identifikasi ukuran baru yang tidak dikenal (tidak ada di le.classes_)
-    # unknown_sizes = ~data['Ukuran'].isin(le.classes_)
-
-    # # Tampilkan ukuran yang tidak dikenal (jika ada)
-    # if unknown_sizes.any():
-    #     print(f"Ukuran baru yang tidak dikenal ditemukan: {data.loc[unknown_sizes, 'Ukuran'].unique()}")
-
-    # # Filter data yang mengandung ukuran yang dikenal
-    # data = data[~unknown_sizes].copy()
-
     # LabelEncoder pada kolom 'Ukuran'
     data['Ukuran'] = le.transform(data['Ukuran'])
 
-    # Misalnya, data_new adalah DataFrame baru yang ingin diprediksi
     seq_length = 14  # Harus sama dengan yang digunakan saat pelatihan
     X_new = []
-    dates = []  # List untuk menyimpan tanggal
+    dates = []
 
     for i in range(len(data) - seq_length):
         X_new.append(data.iloc[i:i+seq_length, 1:3].values)  # Ambil jumlah produk dibeli dan ukuran
         dates.append(data.iloc[i+seq_length]['Tanggal Pembayaran']) # Menyimpan tanggal pembayaran untuk prediksi
 
-    data = np.array(X_new)  # Ubah ke array nump
+    data = np.array(X_new)  # Ubah ke array
 
     # Reshape data menjadi 2D untuk melakukan scaling pada kolom jumlah produk dibeli (kolom ke-1)
     X_reshaped = data.reshape(-1, data.shape[-1])
@@ -174,26 +149,18 @@ def predict_model(data):
     # Mendapatkan tanggal terakhir dari data yang diupload
     tanggal_akhir = pd.to_datetime(dates).max()
 
-    # Ambil hasil prediksi 30 data dan jika ada nilai negatif diubah menjadi 0
-    # predicted_jumlah_produk = np.where(predicted_jumlah_produk_load[:30].flatten() < 0, 0, predicted_jumlah_produk_load[:30].flatten())
     predicted_jumlah_produk = np.where(predicted_jumlah_produk_load.flatten() < 0, 0, predicted_jumlah_produk_load.flatten())
 
     # Pastikan panjang `predicted_jumlah_produk` dan `predicted_ukuran_asli_load` sama
     min_length = min(len(predicted_jumlah_produk), len(predicted_ukuran_asli_load))
 
-    # Potong keduanya agar sama panjang
     predicted_jumlah_produk = predicted_jumlah_produk[:min_length]
     predicted_ukuran = predicted_ukuran_asli_load[:min_length]
-    
-    # Tanggal Prediksi
-    # tanggal_prediksi = pd.date_range(start=tanggal_akhir + pd.Timedelta(days=1), periods=min_length).to_period('M')
-    # Tentukan bulan dan tahun prediksi (bulan setelah tanggal_akhir)
+
     bulan_tahun_prediksi = (tanggal_akhir + pd.Timedelta(days=1)).replace(day=1).strftime('%Y-%m')
 
-    # Mengisi kolom 'Tanggal Pembayaran' dengan bulan_tahun_prediksi yang diulang sesuai panjang prediksi
+    # Mengisi kolom 'Tanggal Pembayaran' sesuai dengan bulan
     tanggal_prediksi = [bulan_tahun_prediksi] * min_length
-
-    # predicted_ukuran = predicted_ukuran_asli_load[:30]
     
     # Membuat DataFrame untuk membandingkan hasil prediksi
     hasil_prediksi_load = pd.DataFrame({
@@ -245,34 +212,33 @@ def inventory_management(data):
         # Data yang diprediksi untuk produk tertentu (jumlah produk dibeli)
         y_pred_product = produk_data['Jumlah Produk Dibeli Prediksi'].values
 
-        # Hitung standar deviasi dari error prediksi
+        # Standar deviasi dari error prediksi
         S = np.std(y_pred_product)
 
-        # Hitung standar deviasi selama lead time (dalam hari)
-        # S_L = S * np.sqrt(L)
+        # Standar deviasi selama lead time (dalam hari)
         S_L = S * np.sqrt(L)
 
-        # Hitung nilai N
+        # Nilai N (Ekspektasi Kekurangan Barang)
         phi = stats.norm.pdf(Za)
         Psi = stats.norm.cdf(Za) * Za
         N = S_L * (Psi - phi)
 
-        # Hitung cadangan pengaman (SS)
+        # Cadangan pengaman (SS)
         SS = Za * S_L
 
         # Rata-rata permintaan selama lead time (dalam hari)
         DL = np.mean(y_pred_product) * L
 
-        # Hitung saat pemesanan ulang (r)
+        # Reorder Point (r)
         r = DL + SS
 
-        # Hitung tingkat pelayanan (η)
+        # Tingkat pelayanan (η) yang diberikan (opt)
         eta = 1 - (N / DL) if DL != 0 else 0  # Menghindari pembagian dengan nol
 
-        # Hitung stok optimal
+        # Stok optimal
         optimal_stock = SS + r
 
-        # Simpan hasil dalam dictionary
+        # Hasil dalam dictionary
         return {
             "SS": round(SS),
             "ReorderPoint": round(r),
@@ -301,31 +267,31 @@ def inventory_raw(data):
         # Data yang diprediksi untuk produk tertentu (jumlah produk dibeli)
         y_pred_product = produk_data['Jumlah Produk Dibeli Prediksi'].values
 
-        # Hitung standar deviasi dari error prediksi
+        # Standar deviasi dari error prediksi
         S = np.std(y_pred_product)
 
-        # Hitung standar deviasi selama lead time (dalam hari)
+        # Standar deviasi selama lead time (dalam hari)
         # S_L = S * np.sqrt(L)
         S_L = S * np.sqrt(L)
 
-        # Hitung nilai N
+        # Nilai N
         phi = stats.norm.pdf(Za)
         Psi = stats.norm.cdf(Za) * Za
         N = S_L * (Psi - phi)
 
-        # Hitung cadangan pengaman (SS)
+        # Cadangan pengaman (SS)
         SS = Za * S_L
 
         # Rata-rata permintaan selama lead time (dalam hari)
         DL = np.mean(y_pred_product) * L
 
-        # Hitung saat pemesanan ulang (r)
+        # Reorder Point (r)
         r = DL + SS
 
-        # Hitung tingkat pelayanan (η)
+        # Tingkat pelayanan (η) yang diberikan (opt)
         eta = 1 - (N / DL) if DL != 0 else 0  # Menghindari pembagian dengan nol
 
-        # Hitung stok optimal
+        # Stok optimal
         optimal_stock = SS + r
 
         # Simpan hasil dalam dictionary
