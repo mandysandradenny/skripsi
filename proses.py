@@ -5,15 +5,13 @@ import re
 import joblib
 from datetime import datetime, timedelta 
 from sklearn.impute import KNNImputer
-from sklearn.preprocessing import RobustScaler, LabelEncoder, StandardScaler
-from tensorflow.keras.models import Sequential, load_model # type: ignore
+from sklearn.preprocessing import LabelEncoder
+from tensorflow.keras.models import load_model # type: ignore
 import matplotlib
 matplotlib.use('Agg')  # Non-interactive backend
 import matplotlib.pyplot as plt
 import io
 import base64
-import hashlib
-from db import insert_users
 
 def preprocessing(file):
     df = pd.read_excel(file, skiprows=4)
@@ -302,12 +300,3 @@ def inventory_raw(data):
             "Ekspektasi": round(N)
         }
 
-def hashed(password):
-    return hashlib.sha256(password.encode('utf-8')).hexdigest()
-
-def register_user(username:str, password:str):
-    password_hashed = hashed(password)
-    insert_users(username, password_hashed)
-
-# Untuk mendaftarkan user
-# register_user('username', 'password')

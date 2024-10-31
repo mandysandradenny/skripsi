@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, flash
 from db import batch_insert, get_data
-from proses import preprocessing, predict_model, create_chart, inventory_management, hashed, inventory_raw
+from proses import preprocessing, predict_model, create_chart, inventory_management, inventory_raw
+from regist import hashed
 import os
 
 app = Flask(__name__)
