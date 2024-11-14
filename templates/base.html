@@ -1,288 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Skripsi Mandy</title>
-    <link
-      rel="icon"
-      href="{{url_for('static', filename='icon.png')}}"
-      type="image/x-icon"
-    />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-    <style>
-      /* Reset some default styles */
-      body,
-      h1,
-      h2,
-      ul,
-      li {
-        margin: 0;
-        padding: 0;
-      }
 
-      body {
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        line-height: 1.6;
-        background-color: whitesmoke;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skripsi Mandy</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <style>
+    body,
+    h1,
+    h2,
+    ul,
+    li {
+      margin: 0;
+      padding: 0;
+    }
 
-      header {
-        padding: 10px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #711a14;
-      }
+    body {
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      line-height: 1.6;
+      background-color: whitesmoke;
+    }
 
-      header a img {
-        max-width: 165px;
-        margin-right: 20px;
-      }
+    header {
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #711a14;
+    }
 
+    header a img {
+      max-width: 165px;
+      margin-right: 20px;
+    }
+
+    .nav-buttons ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+
+    .nav-buttons ul li {
+      margin-right: 10px;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    #subHeader {
+      display: none;
+    }
+
+    footer {
+      bottom: 0;
+    }
+
+    .nav-item {
+      list-style: none;
+    }
+
+    @media screen and (max-width: 800px) {
       .nav-buttons ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
-      }
-
-      .nav-buttons ul li {
-        margin-right: 10px;
-      }
-
-      main {
-        padding: 20px;
-      }
-
-      #subHeader {
         display: none;
       }
 
-      footer {
-        bottom: 0;
+      header a {
+        margin: auto;
       }
 
-      .nav-item {
-        list-style: none;
+      #subHeader {
+        display: flex;
+        padding: 10px 20px;
+        justify-content: center;
+        align-items: center;
       }
 
-      @media screen and (max-width: 800px) {
-        .nav-buttons ul {
-          display: none;
-        }
-
-        header a {
-          margin: auto;
-        }
-
-        #subHeader {
-          display: flex;
-          padding: 10px 20px;
-          justify-content: center;
-          align-items: center;
-        }
-
-        #subHeader a {
-          margin-left: 5px;
-          margin-right: 5px;
-        }
+      #subHeader a {
+        margin-left: 5px;
+        margin-right: 5px;
       }
-    </style>
-  </head>
+    }
+  </style>
+</head>
 
-  <body>
-    <header>
-      <a href="/home" style="text-decoration: none">
-        <h3 style="color: white; margin-top: 5px; font-weight: bold;">LAYBox</h3>
+<body>
+  <header>
+    <a href="/home" style="text-decoration: none; display: flex; justify-content: flex-start; align-items: center;">
+      <img src="/static/logo_untar.png" alt="Logo" style="width: 42px; height: 50px;">
+      <h4 style="color: white; margin: 0; font-weight: bold;">LAYBox</h4>
+    </a>
+    <!-- <h3 style="color: white; margin-top: 5px; font-weight: bold;">LAYBox</h3> -->
+    <nav>
+      <div class="nav-buttons">
+        <ul>
+          <li class="nav-item">
+            <a href="/home" class="btn {% if nav == 'home' %} btn-light {% else %} btn-outline-light {% endif %}"
+              aria-current="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid"
+                viewBox="0 0 16 16">
+                <path
+                  d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5z" />
+              </svg>
+              <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Home</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/list" class="btn {% if nav == 'list' %} btn-light {% else %} btn-outline-light {% endif %}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-table"
+                viewBox="0 0 16 16">
+                <path
+                  d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 2h-4v3h4zm0 4h-4v3h4zm0 4h-4v3h3a1 1 0 0 0 1-1zm-5 3v-3H6v3zm-5 0v-3H1v2a1 1 0 0 0 1 1zm-4-4h4V8H1zm0-4h4V4H1zm5-3v3h4V4zm4 4H6v3h4z" />
+              </svg>
+              <i class="fas fa-chart-line fa-fw me-3"></i>
+              <span>Data</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/pred" class="btn {% if nav == 'pred' %} btn-light {% else %} btn-outline-light {% endif %}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-bar-chart-line" viewBox="0 0 16 16">
+                <path
+                  d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1zm1 12h2V2h-2zm-3 0V7H7v7zm-5 0v-3H2v3z" />
+              </svg>
+              <i class="fas fa-lock fa-fw me-3"></i>
+              <span>Prediksi</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/algo" class="btn {% if nav == 'algo' %} btn-light {% else %} btn-outline-light {% endif %}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07" />
+              </svg>
+              <i class="fas fa-lock fa-fw me-3"></i>
+              <span>Evaluasi Model</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <div id="subHeader">
+    <li class="nav-item">
+      <a href="/home" class="btn {% if nav == 'home' %} btn-dark {% else %} btn-outline-dark {% endif %}"
+        aria-current="true" style="height: 85px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-grid"
+          viewBox="0 0 16 16">
+          <path
+            d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5z" />
+        </svg>
+        <i class="fas fa-tachometer-alt fa-fw me-3"></i>
+        <span>Home</span>
       </a>
-      <nav>
-        <div class="nav-buttons">
-          <ul>
-            <li class="nav-item">
-              <a
-                href="/home"
-                class="btn {% if nav == 'home' %} btn-light {% else %} btn-outline-light {% endif %}"
-                aria-current="true"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-grid"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5z"
-                  />
-                </svg>
-                <i class="fas fa-tachometer-alt fa-fw me-3"></i
-                ><span>Home</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                href="/list"
-                class="btn {% if nav == 'list' %} btn-light {% else %} btn-outline-light {% endif %}"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-table"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 2h-4v3h4zm0 4h-4v3h4zm0 4h-4v3h3a1 1 0 0 0 1-1zm-5 3v-3H6v3zm-5 0v-3H1v2a1 1 0 0 0 1 1zm-4-4h4V8H1zm0-4h4V4H1zm5-3v3h4V4zm4 4H6v3h4z"
-                  />
-                </svg>
-                <i class="fas fa-chart-line fa-fw me-3"></i>
-                <span>Data</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                href="/algo"
-                class="btn {% if nav == 'algo' %} btn-light {% else %} btn-outline-light {% endif %}"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-graph-up"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"
-                  />
-                </svg>
-                <i class="fas fa-lock fa-fw me-3"></i>
-                <span>Algoritma</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                href="/pred"
-                class="btn {% if nav == 'pred' %} btn-light {% else %} btn-outline-light {% endif %}"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-broadcast"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M3.05 3.05a7 7 0 0 0 0 9.9.5.5 0 0 1-.707.707 8 8 0 0 1 0-11.314.5.5 0 0 1 .707.707m2.122 2.122a4 4 0 0 0 0 5.656.5.5 0 1 1-.708.708 5 5 0 0 1 0-7.072.5.5 0 0 1 .708.708m5.656-.708a.5.5 0 0 1 .708 0 5 5 0 0 1 0 7.072.5.5 0 1 1-.708-.708 4 4 0 0 0 0-5.656.5.5 0 0 1 0-.708m2.122-2.12a.5.5 0 0 1 .707 0 8 8 0 0 1 0 11.313.5.5 0 0 1-.707-.707 7 7 0 0 0 0-9.9.5.5 0 0 1 0-.707zM10 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0"
-                  />
-                </svg>
-                <i class="fas fa-lock fa-fw me-3"></i>
-                <span>Prediksi</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </header>
-    <div id="subHeader">
-      <li class="nav-item">
-        <a
-          href="/home"
-          class="btn {% if nav == 'home' %} btn-dark {% else %} btn-outline-dark {% endif %}"
-          aria-current="true"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-grid"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5z"
-            />
-          </svg>
-          <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Home</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a
-          href="/list"
-          class="btn {% if nav == 'list' %} btn-dark {% else %} btn-outline-dark {% endif %}"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-table"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 2h-4v3h4zm0 4h-4v3h4zm0 4h-4v3h3a1 1 0 0 0 1-1zm-5 3v-3H6v3zm-5 0v-3H1v2a1 1 0 0 0 1 1zm-4-4h4V8H1zm0-4h4V4H1zm5-3v3h4V4zm4 4H6v3h4z"
-            />
-          </svg>
-          <i class="fas fa-chart-line fa-fw me-3"></i>
-          <span>Data</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a
-          href="/algo"
-          class="btn {% if nav == 'algo' %} btn-dark {% else %} btn-outline-dark {% endif %}"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-graph-up"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"
-            />
-          </svg>
-          <i class="fas fa-lock fa-fw me-3"></i>
-          <span>Algoritma</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a
-          href="/pred"
-          class="btn {% if nav == 'pred' %} btn-dark {% else %} btn-outline-dark {% endif %}"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-broadcast"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M3.05 3.05a7 7 0 0 0 0 9.9.5.5 0 0 1-.707.707 8 8 0 0 1 0-11.314.5.5 0 0 1 .707.707m2.122 2.122a4 4 0 0 0 0 5.656.5.5 0 1 1-.708.708 5 5 0 0 1 0-7.072.5.5 0 0 1 .708.708m5.656-.708a.5.5 0 0 1 .708 0 5 5 0 0 1 0 7.072.5.5 0 1 1-.708-.708 4 4 0 0 0 0-5.656.5.5 0 0 1 0-.708m2.122-2.12a.5.5 0 0 1 .707 0 8 8 0 0 1 0 11.313.5.5 0 0 1-.707-.707 7 7 0 0 0 0-9.9.5.5 0 0 1 0-.707zM10 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0"
-            />
-          </svg>
-          <i class="fas fa-lock fa-fw me-3"></i>
-          <span>Prediksi</span>
-        </a>
-      </li>
-    </div>
-    <main>{% block main %} {% endblock main %}</main>
+    </li>
+    <li class="nav-item">
+      <a href="/list" class="btn {% if nav == 'list' %} btn-dark {% else %} btn-outline-dark {% endif %}"
+        style="height: 85px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-table"
+          viewBox="0 0 16 16">
+          <path
+            d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 2h-4v3h4zm0 4h-4v3h4zm0 4h-4v3h3a1 1 0 0 0 1-1zm-5 3v-3H6v3zm-5 0v-3H1v2a1 1 0 0 0 1 1zm-4-4h4V8H1zm0-4h4V4H1zm5-3v3h4V4zm4 4H6v3h4z" />
+        </svg>
+        <i class="fas fa-chart-line fa-fw me-3"></i>
+        <span>Data</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/pred" class="btn {% if nav == 'pred' %} btn-dark {% else %} btn-outline-dark {% endif %}"
+        style="height: 85px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart-line"
+          viewBox="0 0 16 16">
+          <path
+            d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1zm1 12h2V2h-2zm-3 0V7H7v7zm-5 0v-3H2v3z" />
+        </svg>
+        <i class="fas fa-lock fa-fw me-3"></i>
+        <span>Prediksi</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/algo" class="btn {% if nav == 'algo' %} btn-dark {% else %} btn-outline-dark {% endif %}"
+        style="height: 85px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up"
+          viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+            d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07" />
+        </svg>
+        <i class="fas fa-lock fa-fw me-3"></i>
+        <span>Evaluasi Model</span>
+      </a>
+    </li>
+  </div>
+  <main>{% block main %} {% endblock main %}</main>
 
-    <footer>
-      <p>&nbsp;&nbsp; @ Mandy Sandra Denny</p>
-    </footer>
-  </body>
+  {% if request.path != '/help' %}
+  <a href="/help">
+    <svg id="help-btn" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"
+      xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-question-circle"
+      viewBox="0 0 16 16">
+      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+      <path
+        d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
+    </svg>
+  </a>
+  {% endif %}
+
+  <footer>
+    <p>&nbsp;&nbsp; @ Mandy Sandra Denny</p>
+  </footer>
+</body>
+
 </html>

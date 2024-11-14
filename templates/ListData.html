@@ -23,7 +23,7 @@
 <h4 style="text-align: center;">Pilih Bulan</h4>
 <div class="container-fluid">
   <div class="row justify-content-center">
-  <select class="form-select text-center" name="month" id="month" onchange="goToPage(this)">
+  <select class="form-select text-center" style="min-width: 200px;" name="month" id="month" onchange="goToPage(this)">
     <option value="/list">Show All</option>
     {% for x in dates %}
       <option value="/list/{{x[0]}}" {% if x[0] == year_month %} selected {% endif %}>{{x[0]}}</option>
@@ -94,5 +94,5 @@
   });
 </script>
 
-<br /><br />
+<br /><br /><br><br>
 {% endblock %}

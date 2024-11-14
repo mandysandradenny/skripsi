@@ -1,24 +1,86 @@
-{% extends 'base.html' %} {% block main %}
+{% extends 'base.html' %}
+{% block main %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <div class="container-fluid">
   <h3 style="text-align: center">Hasil Evaluasi Model Gated Recurrent Unit</h3>
   <br />
-  <h5>MAE: 38.03</h5>
-  <h5>RMSE: 57.23</h5>
-  <h5>Akurasi Ukuran: 25%</h5>
-  <div class="row justify-content-center mt-5">
-    <img
-      src="{{url_for('static', filename='Grafik1.png')}}"
-      style="width: 90vw; max-width: 850px"
-      alt=""
-    />
+  <h5>MAE: 33.47</h5>
+  <h5>RMSE: 51.79</h5>
+  <h5>Akurasi Ukuran: 29.36%</h5>
+  <br>
+
+  <div id="image1" class="text-center">
+    <button type="button" class="btn btn-success mb-4" style="height: 40px; width: 100px;" data-bs-toggle="modal"
+      data-bs-target="#exampleModal1">
+      Deskripsi
+    </button>
+    <br>
+    <img src="{{url_for('static', filename='Grafik1.png')}}" style="width: 90vw; max-width: 850px" alt="Grafik 1" />
   </div>
-  <div class="row justify-content-center mt-5">
-    <img
-      src="{{url_for('static', filename='Grafik2.png')}}"
-      style="width: 90vw; max-width: 850px"
-      alt=""
-    />
+
+  <div id="image2" class="text-center" style="display: none;">
+    <button type="button" class="btn btn-success mb-4" style="height: 40px; width: 100px;" data-bs-toggle="modal"
+      data-bs-target="#exampleModal2">
+      Deskripsi
+    </button>
+    <br>
+    <img src="{{url_for('static', filename='Grafik2.png')}}" style="width: 90vw; max-width: 850px" alt="Grafik 2" />
+  </div>
+
+  <div class="d-flex justify-content-center mt-4">
+    <button id="backs" class="btn btn-secondary" style="display: none;" onclick="back()">Back</button>
+    <button id="nexts" class="btn btn-primary" onclick="next()">Next</button>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Deskripsi Grafik</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Jumlah produk dibeli adalah total dari berapa dus yang dibeli oleh pembeli.
+          Grafik menunjukan hasil prediksi dari jumlah produk dibeli yang didapatkan dari proses pembelajaran GRU.
+          Data aktual diinisialisasi dengan warna orange, dan data prediksi diinisialisasi dengan warna biru.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Deskripsi Grafik</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Grafik ini menunjukan hasil prediksi ukuran, yang didapatkan dari proses pembelajaran GRU.
+          Data aktual diinisialisasi dengan bulat hijau, dan data prediksi diinisialisasi dengan x merah.
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
+
+<script>
+  function next() {
+    document.getElementById('image2').style.display = 'block';
+    document.getElementById('image1').style.display = 'none';
+    document.getElementById('nexts').style.display = 'none';
+    document.getElementById('backs').style.display = 'inline-block';
+  }
+
+  function back() {
+    document.getElementById('image1').style.display = 'block';
+    document.getElementById('image2').style.display = 'none';
+    document.getElementById('backs').style.display = 'none';
+    document.getElementById('nexts').style.display = 'inline-block';
+  }
+</script>
+
 {% endblock %}

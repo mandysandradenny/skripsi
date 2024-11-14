@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+{% block main %}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+<div style="display: flex; justify-content: end; align-items: center">
+    <button onclick="window.history.back();" class="btn btn-secondary">Back</button>
+</div>
+
+<div class="d-flex justify-content-center my-4">
+    <input type="text" class="form-control w-50" id="faqSearch" placeholder="Search FAQs...">
+</div>
+
+<h3 class="text-center mb-4">Frequently Asked Questions</h3>
+
+<div class="accordion" id="accordionList">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                Bagaimana cara penggunaan web?
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionList">
+            <div class="accordion-body">
+                <ol>
+                    <li>
+                        <strong>Halaman <i>Home</i></strong> digunakan untuk melakukan <i>upload data</i> penjualan yang
+                        telah
+                        diunduh dari Tokopedia.
+                        Klik tombol "<i>Choose File</i>" untuk memilih file, kemudian klik tombol "<i>upload</i>".
+                        Setelah berhasil melakukan <i>upload</i>, maka akan <i>redirect</i> ke halaman Data.
+                    </li>
+                    <br>
+                    <img src="/static/penggunaan_web/home.png" style="max-width: 600px;">
+                    <br><br>
+
+                    <li>
+                        <strong>Halaman Data</strong> digunakan untuk menampilkan hasil data yang telah di
+                        <i>preprocessing</i> atau diolah.
+                        <i>Dropdown list</i> "Pilih Bulan" untuk memilih bulan yang ingin ditampilkan pada tabel.
+                        Terdapat juga beberapa fitur dan <i>paginition control </i>pada tabel yang dapat digunakan untuk
+                        menampilkan data pada tabel
+                    </li>
+                    <br>
+                    <img src="/static/penggunaan_web/data_after_upload.png" style="max-width: 600px;">
+                    <br><br>
+
+                    <li>
+                        <strong>Halaman Prediksi</strong> digunakan untuk menampilkan hasil prediksi metode GRU dari
+                        data yang telah di <i>upload</i> dan melalui tahap <i>preprocessing</i>.
+                        <i>Dropdown list</i> "Pilih Bulan" untuk memilih bulan hasil prediksi yang ingin ditampilkan.
+                        Setelah memilih bulan, akan tampil tabel informasi
+                        manajemen inventori untuk bahan baku. Kemudian <i>Dropdown list</i> "Pilih Ukuran" untuk memilih
+                        hasil prediksi ukuran yang ingin ditampilkan, setelah di klik
+                        maka akan redirect ke halaman "Ukuran".
+                    </li>
+                    <br>
+                    <img src="/static/penggunaan_web/prediksi_pilih_bulan.png" style="max-width: 600px;">
+                    <br><br>
+
+                    <li>
+                        <strong>Halaman Prediksi-Ukuran</strong> digunakan untuk menampilkan hasil prediksi dari ukuran
+                        yang sudah dipilih di halaman prediksi. Terdapat grafik batang dan tabel “Jumlah Produk Dibeli
+                        Pada Setiap Pesanan” yang merupakan detail dari grafik batang yang diberikan.
+
+                    </li>
+                    Contoh grafik dibawah pada bulan September 2024 untuk ukuran 15x15x5cm diprediksi terdapat
+                    pesanan sebanyak 4 kali dengan jumlah 20, 1, 48, dan 13 dus. Kemudian terdapat tabel informasi
+                    manajemen inventori untuk ukuran 15x15x5cm, dan hasil dari manajemen inventori yang diberikan
+                    akan disesuaikan dengan setiap hasil prediksi dari ukuran yang dipilih.
+                    <br><br>
+                    <img src="/static/penggunaan_web/prediksi_pilih_ukuran.png" style="max-width: 600px;">
+                    <br><br>
+
+                    <li>
+                        <strong>Halaman Evaluasi Model</strong> digunakan untuk menampilkan informasi hasil evaluasi
+                        dari model Gated Recurrent Unit yang digunakan. Dalam halaman ini hanya menampilkan hasil MAE,
+                        RMSE, Akurasi Ukuran, dan perbandingan jumlah dan ukuran antara data aktual dan data prediksi
+                        yang didapatkan dari hasil pelatihan model dalam bentuk grafik. Di awal halaman Evaluasi Model
+                        akan menampilkan perbandingan jumlah produk dibeli terlebih dahulu.
+                    </li>
+                    Tombol "Deskripsi" digunakan untuk menampilkan penjelasan terkait grafik yang ditampilkan, ketika di
+                    klik akan muncul pop up yang berisi penjelasan tersebut. <br>
+                    <br>
+                    <img src="/static/penggunaan_web/evaluasi_jumlah.png" style="max-width: 600px;">
+                    <br><br>
+                    Tombol "Next" digunakan untuk menampilkan grafik perbandingan ukuran, ketika klik tombol Next grafik
+                    yang tampil akan berubah menjadi grafik perbandingan ukuran.
+                    <br><br>
+                    <img src="/static/penggunaan_web/evaluasi_ukuran.png" style="max-width: 600px;">
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Apa tujuan pembuatan sistem?
+            </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionList">
+            <div class="accordion-body">
+                <strong>Tujuan</strong> membuat sistem ini adalah agar dapat melakukan prediksi penjualan dan
+                memberikan informasi mengenai stok atau cadangan pengaman yang diperlukan. Metode yang digunakan adalah
+                metode Gated Recurrent Unit dan metode Probabilistik Sederhana. Melalui sistem ini admin dapat
+                mengetahui
+                informasi terkait prediksi penjualan produk dan mengatur penyimpanan dari bahan baku sampai produk jadi,
+                untuk menjaga keseimbangan ketersediaan produk melalui informasi yang diberikan dalam sistem.
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Apa itu metode Gated Recurrent Unit?
+            </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionList">
+            <div class="accordion-body">
+                <strong>Metode Gated Recurrent Unit (GRU)</strong> merupakan metode yang digunakan sistem
+                untuk melakukan prediksi penjualan. Metode GRU digunakan untuk memodelkan data sekuensial (urutan)
+                seperti <i>data time series</i>, contohnya data penjualan.
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                Apa itu metode Probabilistik Sederhana?
+            </button>
+        </h2>
+        <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionList">
+            <div class="accordion-body">
+                <strong>Metode Probabilistik Sederhana</strong> merupakan metode yang digunakan untuk
+                memberikan informasi manajemen inventori pada bahan baku dan produk jadi.
+                Komponen informasi manajemen inventori yang diberikan adalah <i>safety stock</i>, <i>reorder point</i>,
+                stok optimal, dan ekspektasi kekurangan barang.
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                Apa itu Safety Stock, Reorder Point, Stok Optimal, dan Ekspektasi Kekurangan Barang ?
+            </button>
+        </h2>
+        <div id="collapseNine" class="accordion-collapse collapse" data-bs-parent="#accordionList">
+            <div class="accordion-body">
+                <ul>
+                    <li>
+                        <strong><i>Safety stock</i> atau cadangan pengaman</strong> adalah stok tambahan
+                        yang disimpan untuk mencegah terjadinya kehabisan barang karena suatu kondisi tertentu
+                        dalam <i>lead time</i> (waktu tunggu). <i>Lead time</i> yang digunakan pada sistem untuk
+                        bahan baku adalah 7 hari, dan produk jadi adalah 2 hari.
+                    </li>
+                    <br>
+                    <li>
+                        <strong><i>Reorder point</i></strong> adalah titik atau batas minimal stok untuk memesan bahan
+                        baku ataupun memproduksi produk jadi untuk mencegah kehabisan stok. Jika stok mencapai
+                        nilai <i>reorder point</i> yang telah ditentukan, maka pemesanan bahan baku atau pembuatan
+                        produk
+                        perlu dilakukan kembali.
+                    </li>
+                    <br>
+                    <li>
+                        <strong>Stok optimal</strong> adalah stok yang perlu disediakan agar tidak mengalami kekurangan
+                        stok atau stok tidak tersedia. Stok optimal didapat dari penambahan <i>reorder point</i> dan
+                        <i>safety
+                            stock</i>.
+                    </li>
+                    <br>
+                    <li>
+                        <strong>Ekspektasi kekurangan barang</strong> adalah perkiraan besar jumlah permintaan yang
+                        mungkin tidak
+                        dapat dipenuhi dari stok yang tersedia. Nilai ini digunakan untuk mengatasi adanya permintaan
+                        yang tidak
+                        terpenuhi selama <i>lead time</i>.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                Data apa yang ditampilkan di halaman Data?
+            </button>
+        </h2>
+        <div id="collapseEight" class="accordion-collapse collapse" data-bs-parent="#accordionList">
+            <div class="accordion-body">
+                <strong>Data</strong> yang tampil merupakan data penjualan yang di <i>upload</i> pada menu
+                <i>Home</i> kemudian telah melalui tahap <i>preprocessing</i> atau diolah terlebih dahulu
+                agar dapat dilakukan prediksi oleh model GRU.
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                Apa itu MAE?
+            </button>
+        </h2>
+        <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionList">
+            <div class="accordion-body">
+                <strong>Mean Absolute Error (MAE)</strong> adalah rata-rata selisih mutlak antara nilai
+                aktual dengan nilai prediksi yang digunakan untuk mengukur suatu model dalam memprediksi
+                keakuratan. Semakin kecil nilai MAE maka semakin baik model dalam melakukan prediksi.
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                Apa itu RMSE?
+            </button>
+        </h2>
+        <div id="collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionList">
+            <div class="accordion-body">
+                <strong>Root Mean Squared Error (RMSE)</strong> adalah akar nilai rata-rata dari selisih
+                kuadrat antara nilai prediksi dan nilai aktual. Semakin kecil nilai RMSE maka semakin baik
+                model dalam melakukan prediksi.
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                Mengapa akurasi yang diberikan kecil?
+            </button>
+        </h2>
+        <div id="collapseSeven" class="accordion-collapse collapse" data-bs-parent="#accordionList">
+            <div class="accordion-body">
+                <strong>Akurasi ukuran</strong> yang kecil setelah dilakukan pengujian dan analisis,
+                disimpulkan hal ini dapat terjadi karena kurangnya data yang digunakan untuk melakukan
+                pelatihan model. Sehingga diharapkan data yang ada kedepannya dapat digunakan kembali
+                untuk melatih model dan memperbaiki akurasi prediksi yang dapat diberikan model untuk
+                melakukan prediksi.
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                Bagaimana cara mendaftarkan user?
+            </button>
+        </h2>
+        <div id="collapseTen" class="accordion-collapse collapse" data-bs-parent="#accordionList">
+            <div class="accordion-body">
+                <strong>Mendaftarkan <i>user</i></strong> dilakukan melalui <i>background</i> proses, terdapat 
+                <i>file python</i> dengan nama file "regist.py". Dalam file terdapat <i>function</i> yang berfungsi 
+                untuk mendaftarkan <i>user</i>, caranya dengan menjalankan <i>function register_user('username', 'password')</i>.  
+                <br>
+                <img src="/static/register.jpeg" style="max-width: 600px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+<script>
+    // Search function for FAQs
+    document.getElementById('faqSearch').addEventListener('input', function () {
+        const searchQuery = this.value.toLowerCase();
+        const faqs = document.querySelectorAll('.accordion-item');
+
+        faqs.forEach(faq => {
+            const question = faq.querySelector('.accordion-button').textContent.toLowerCase();
+            const content = faq.querySelector('.accordion-body').textContent.toLowerCase();
+
+            if (question.includes(searchQuery) || content.includes(searchQuery)) {
+                faq.style.display = 'block';
+            } else {
+                faq.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+
+{% endblock %}

@@ -106,6 +106,16 @@ def predict_model(data):
     le = LabelEncoder()
     le.classes_ = np.load('model/classes.npy', allow_pickle=True)
 
+    # Identifikasi ukuran baru yang tidak dikenal (tidak ada di le.classes_)
+    unknown_sizes = ~data['Ukuran'].isin(le.classes_)
+    
+    # Tampilkan ukuran yang tidak dikenal (jika ada)
+    if unknown_sizes.any():
+        print(f"Ukuran baru yang tidak dikenal ditemukan: {data.loc[unknown_sizes, 'Ukuran'].unique()}")
+    
+    # Filter data yang mengandung ukuran yang dikenal
+    data = data[~unknown_sizes].copy()
+    
     # LabelEncoder pada kolom 'Ukuran'
     data['Ukuran'] = le.transform(data['Ukuran'])
 
@@ -171,7 +181,7 @@ def predict_model(data):
 
 # Grafik menggunakan matplotlib
 def create_chart(ukuran, qty_data):
-    plt.figure(figsize=(6, 4))
+    plt.figure(figsize=(12, 6))
     plt.bar(range(1, len(qty_data) + 1), qty_data, color='skyblue')  # Membuat bar chart dengan X mulai dari 1, 2, 3, dst.
 
     plt.title(f"Prediksi untuk Ukuran {ukuran}")

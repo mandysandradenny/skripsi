@@ -3,9 +3,10 @@ from db import batch_insert, get_data
 from proses import preprocessing, predict_model, create_chart, inventory_management, inventory_raw
 from regist import hashed
 import os
+import pandas as pd
 
 app = Flask(__name__)
-app.secret_key = 'KAMUJELEK'
+app.secret_key = 'MandySandraDenny_535210034'
 app.config['UPLOAD_FOLDER'] = 'static/uploads/'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
@@ -24,8 +25,20 @@ def get_home():
 def post_index():
     files = request.files['fileInput']
     df = preprocessing(files)
+    
+    date = pd.to_datetime(df['Tanggal Pembayaran'].iloc[0], format='%Y-%m-%d')
+    month = date.month
+    year = date.year
+
+    search_query = f"SELECT DISTINCT DATE_FORMAT(date, '%Y-%m') AS 'year_month' FROM sales WHERE MONTH(date) = '{month}' AND YEAR(date) = '{year}';"
+    search = get_data(query=search_query)
+    if search:
+        flash(f"Data untuk bulan {month}/{year} sudah pernah di-upload")
+        return redirect("/home")
+    
     insert_query = f"INSERT INTO sales (date, name, qty) VALUES (%s, %s, %s)"
     batch_insert(insert_query, df)
+
     prediction_model = predict_model(df)
     insert_query = f"INSERT INTO predict (month, name, qty) VALUES (%s, %s, %s)"
     batch_insert(insert_query, prediction_model)
@@ -112,6 +125,10 @@ def post_login():
 def logout():
     session.clear()
     return redirect("/login")
+
+@app.get('/help')
+def get_help():
+    return render_template("Help.html")
 
 # main driver function
 if __name__ == '__main__':

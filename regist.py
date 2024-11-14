@@ -9,4 +9,4 @@ def register_user(username:str, password:str):
     insert_users(username, password_hashed)
 
 # Untuk mendaftarkan user
-# register_user('mandy', 'mandy')
+# register_user('admin', 'admin')

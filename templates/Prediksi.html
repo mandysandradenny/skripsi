@@ -49,10 +49,9 @@
     <option value="{{ x[0] }}" {% if x[0] == ukuran %} selected {% endif %}>{{ x[0] }}</option>
     {% endfor %}
   </select>
-<br><br>
 
 {% if inventory %}
-
+<br>
 <h4>Informasi Manajemen Inventory Bahan Baku</h4>
 <br>
   <table class="table table-bordered">
@@ -76,6 +75,4 @@
     {% endif %}
 </div>
 
-
-<br /><br /><br />
 {% endblock %}

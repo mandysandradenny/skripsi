@@ -1,48 +1,47 @@
-{% extends 'base.html' %} {% block main %}
+{% extends 'base.html' %}
+{% block main %}
+
+<style>
+  .centered-list {
+    list-style-position: inside;
+    text-align: center;
+  }
+</style>
+
 <div style="display: flex; justify-content: space-between; align-items: center">
   <p class="d-inline" style="font-weight: bold;">Halo, {{ session['username'] }} &nbsp;</p>
-  <a href="/logout" type="button" class="btn btn-danger ms-2">Logout</a>
+  <a href="/logout" type="button" class="btn ms-2" style="background-color: #711a14; color: white;">Logout</a>
 </div>
-<br /><br /><br /><br /><br />
+<br /><br />
 <h1 style="text-align: center; font-weight: bold;">PENERAPAN</h1>
 <br />
 <h2 style="text-align: center; font-weight: bold;">
   Metode Gated Recurrent Unit dan Metode Probabilistik Sederhana
 </h2>
-<br /><br />
+<br />
+{% for message in get_flashed_messages() %}
+<div style="text-align: center; color: #711a14;">{{ message }}</div>
+{% endfor %}
 <div class="container-fluid">
   <div class="row justify-content-center mt-4">
-    <div
-      class="col-md-4"
-      style="background-color: #711a14; padding: 15px; border-radius: 10px"
-    >
+    <div class="col-md-4" style="background-color: #711a14; padding: 15px; border-radius: 10px">
       <div class="text-center" style="padding: 10px; color: white;">
-        <h4>Upload File</h4>
+        <h4>Upload Data Penjualan</h4>
       </div>
-      <div
-        class="d-flex justify-content-center"
-        style="
+      <div class="d-flex justify-content-center" style="
           background-color: whitesmoke;
           padding-top: 20px;
           border-radius: 6px;
           border: 1px solid;
-        "
-      >
+        ">
         <form action="/home" method="post" enctype="multipart/form-data">
-          <input
-            class="custom-file-upload text-center"
-            type="file"
-            accept=".xls,.xlsx"
-            id="fileInput"
-            name="fileInput"
-            style="
+          <input class="custom-file-upload text-center" type="file" accept=".xls, .xlsx" id="fileInput" name="fileInput"
+            onchange="validateFile()" style="
               border: 2px solid #383737;
               display: inline-block;
               padding: 6px 12px;
               border-radius: 6px;
-            "
-            required
-          />
+            " required />
           <div class="row" style="padding: 10px; justify-content: center;">
             <button type="reset">Reset</button> &nbsp;
             <button type="submit">Upload</button>
@@ -52,5 +51,63 @@
     </div>
   </div>
 </div>
-<br /><br /><br /><br /><br /><br /><br /><br />
+
+<div class="container-fluid">
+  <div class="row justify-content-center mt-5">
+    <h5>Informasi Tambahan:</h5>
+  </div>
+  <div class="accordion row mt-2" id="accordionList">
+    <div class="col-12 text-center">
+      <div class="accordion-item">
+        <p class="accordion-header">
+          <button class="accordion-button collapsed btn btn-outline-dark" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            Cara Pengunduhan Data Penjualan di Tokopedia
+          </button>
+        </p>
+      </div>
+      <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionList">
+        <div class="accordion-body">
+          <ol class="centered-list">
+            <li>
+              Buka web penjualan Tokopedia.
+            </li>
+            <img src="/static/penggunaan_web/home.png" style="max-width: 500px;">
+            <br><br>
+            <li>
+              Klik logo Download.
+            </li>
+            <img src="/static/penggunaan_web/home.png" style="max-width: 500px;">
+            <br><br>
+            <li>
+              Pilih ....
+            </li>
+            <img src="/static/penggunaan_web/home.png" style="max-width: 500px;">
+            <br><br>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<script>
+  function validateFile() {
+    var fileInput = document.getElementById('fileInput');
+    var filePath = fileInput.value;
+    var allowedExtensions = /(\.xls|\.xlsx)$/i;
+
+    if (!allowedExtensions.exec(filePath)) {
+      alert('Upload File dengan Format .xls atau .xlsx');
+      fileInput.value = '';
+      return false;
+    }
+    return true;
+  }
+</script>
+
+<br />
 {% endblock %}
