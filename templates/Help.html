@@ -266,11 +266,31 @@
         </h2>
         <div id="collapseTen" class="accordion-collapse collapse" data-bs-parent="#accordionList">
             <div class="accordion-body">
-                <strong>Mendaftarkan <i>user</i></strong> dilakukan melalui <i>background</i> proses, terdapat 
-                <i>file python</i> dengan nama file "regist.py". Dalam file terdapat <i>function</i> yang berfungsi 
-                untuk mendaftarkan <i>user</i>, caranya dengan menjalankan <i>function register_user('username', 'password')</i>.  
+                <strong>Mendaftarkan <i>user</i></strong> dilakukan melalui <i>background</i> proses yang dijalankan
+                secara manual,
+                terdapat <i>file python</i> dengan nama file "regist.py". Dalam file terdapat <i>function</i> yang
+                berfungsi
+                untuk mendaftarkan <i>user</i>, caranya dengan menjalankan <i>function register_user('username',
+                    'password')</i>.
                 <br>
                 <img src="/static/register.jpeg" style="max-width: 600px;">
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseElv" aria-expanded="false" aria-controls="collapseElv">
+                Bagaimana cara melakukan prediksi?
+            </button>
+        </h2>
+        <div id="collapseElv" class="accordion-collapse collapse" data-bs-parent="#accordionList">
+            <div class="accordion-body">
+                <strong>Prediksi</strong> dilakukan melalui <i>background</i> proses yang otomatis berjalan
+                setelah mengupload data penjualan pada menu Home. Dengan model GRU yang telah dilatih dan disave,
+                kemudian model akan di load di dalam sistem dan berjalan setelah proses <i>upload data</i> berhasil.
+                <br>
             </div>
         </div>
     </div>
