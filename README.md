@@ -34,7 +34,7 @@ Sistem berbasis web yang dirancang untuk memberikan informasi manajemen inventor
    ```
    source venv/bin/activate
    ```
-4. Pastikan XAMPP telah berjalan (Informasi instalasi XAMPP ada di bawah)
+4. Pastikan XAMPP telah berjalan [Klik untuk ke bagian Informasi Instalasi XAMPP](#cara-instalasi-xampp)
 5. Install requirements library:
    ```
    pip install -r requirements.txt
@@ -50,11 +50,15 @@ Sistem berbasis web yang dirancang untuk memberikan informasi manajemen inventor
    ```
    python app.py
    ```
-10. Sistem sudah siap dan dapat diakses pada browser <http://localhost:8080>
+10. Sistem sudah siap dan dapat diakses pada browser <br>
+    🌐 <http://localhost:8080>
 
 ## Manual Program 📖
-Manual program berisikan cara penggunaan web. <br>
+Manual program berisikan cara penggunaan web yang dapat dilihat pada file `manual_program.pdf` <br>
 [Klik untuk baca Manual Program](manual_program.pdf)
+
+Data untuk mencoba sistem:
+[Klik untuk Unduh Data](https://drive.google.com/drive/folders/16UQujsiP80QSte23-4mEruWhwe4uFSh1?usp=sharing)
 
 ## Cara Instalasi XAMPP
 
