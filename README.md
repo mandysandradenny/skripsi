@@ -1,7 +1,7 @@
 # Sistem Manajemen Inventori Melalui Prediksi Penjualan pada Toko LAYBox
 Sistem berbasis web yang dirancang untuk memberikan informasi manajemen inventori melalui hasil prediksi penjualan pada toko online LAYBox
 
-## Fitur
+## Fitur ✨
 - Prediksi penjualan menggunakan metode Gated Recurrent Unit (GRU).
 - Manajemen Inventori menggunakan metode Probabilistik Sederhana.
 - Upload data penjualan dalam format Excel yang diunduh dari website Tokopedia.
@@ -12,12 +12,12 @@ Sistem berbasis web yang dirancang untuk memberikan informasi manajemen inventor
   + Stok Optimal
   + Ekspektasi Kekurangan Barang
 
-## Requirements
+## Requirements 📋
 - Virtual Environment di VS Code (Disarankan)
 - Python 3.xx
 - XAMPP / MySQL
 
-## Cara Instalasi Program
+## Cara Instalasi Program 💻
 1. Clone repositori:
    ```
    git clone <URL_REPOSITORY>;
@@ -50,4 +50,11 @@ Sistem berbasis web yang dirancang untuk memberikan informasi manajemen inventor
    ```
    python app.py
    ```
-10. 
+10. Sistem sudah siap dan dapat diakses pada browser <http://localhost:8080>
+
+## Manual Program 📖
+Manual program berisikan cara penggunaan web. <br>
+[Klik untuk baca Manual Program](manual_program.pdf)
+
+## Cara Instalasi XAMPP
+
