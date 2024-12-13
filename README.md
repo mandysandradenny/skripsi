@@ -20,9 +20,10 @@ Sistem berbasis web yang dirancang untuk memberikan informasi manajemen inventor
 ## Cara Instalasi Program 💻
 1. Clone repositori:
    ```
-   git clone <URL_REPOSITORY>;
+   git clone https://github.com/mandysandradenny/skripsi;
    ```
-2. Buat dan aktifkan virtual environment:
+2. Buka folder repositori 'skripsi' di VSCode.
+3. Buat dan aktifkan virtual environment di VSCode:
    ```
    python -m venv venv
    ```
@@ -35,22 +36,22 @@ Sistem berbasis web yang dirancang untuk memberikan informasi manajemen inventor
    source venv/bin/activate
    ```
 4. Pastikan XAMPP telah berjalan [Klik untuk ke bagian Informasi Instalasi XAMPP](#cara-instalasi-xampp)
-5. Install requirements library:
+5. Copy syntax pada file `init.sql` dan jalankan di phpmyadmin.
+6. Install requirements library:
    ```
    pip install -r requirements.txt
    ```  
-6. Copy syntax pada file `init.sql` dan jalankan di phpmyadmin
 7. Daftarkan user terlebih dahulu:
    - Buka file `regist.py`
    - Uncomment code `register_user('username', 'password')`
    - Masukkan username dan password yang diinginkan `register_user('admin', 'admin')`
    - Jalankan file `regist.py`
    - Comment kembali code `register_user('username', 'password')`
-9. Jalankan sistem:
+8. Jalankan sistem:
    ```
    python app.py
    ```
-10. Sistem sudah siap dan dapat diakses pada browser <br>
+9. Sistem sudah siap dan dapat diakses pada browser. <br>
     🌐 <http://localhost:8080>
 
 ## Manual Program 📖
@@ -60,5 +61,15 @@ Manual program berisikan cara penggunaan web yang dapat dilihat pada file `manua
 Data untuk mencoba sistem:
 [Klik untuk Unduh Data](https://drive.google.com/drive/folders/16UQujsiP80QSte23-4mEruWhwe4uFSh1?usp=sharing)
 
-## Cara Instalasi XAMPP
+## Cara Instalasi XAMPP <img src="https://seeklogo.com/images/X/xampp-logo-1C1A9E3689-seeklogo.com.png" width="33">
 
+1. Buka website <https://www.apachefriends.org/>
+2. Unduh XAMPP sesuai dengan sistem operasi yang digunakan.
+3. Jalankan file instalasi (**pastikan Apache dan MySQL dicentang**)
+4. Setelah instalasi selesai, jalankan aplikasi `XAMPP Control Panel`.
+5. Klik tombol **Start** pada modul **Apache** dan **MySQL** (tampil highlight hijau pada modul)
+6. Memastikan MySQL berjalan dan dapat digunakan: <br>
+   - Buka browser dan akses URL <http://localhost/>
+   - Pada halaman dashboard, klik menu `phpMyAdmin`
+   - Akan tampil tampilan antarmuka **phpMyAdmin**
+   - Klik `SQL` untuk menjalankan syntax yang digunakan.
