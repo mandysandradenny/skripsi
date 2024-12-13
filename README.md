@@ -35,7 +35,7 @@ Sistem berbasis web yang dirancang untuk memberikan informasi manajemen inventor
    ```
    source venv/bin/activate
    ```
-4. Pastikan XAMPP telah berjalan [Klik untuk ke bagian Informasi Instalasi XAMPP](#cara-instalasi-XAMPP-<img src="https://seeklogo.com/images/X/xampp-logo-1C1A9E3689-seeklogo.com.png" width="33">)
+4. Pastikan XAMPP telah berjalan [Klik untuk ke bagian Informasi Instalasi XAMPP](#cara-instalasi-XAMPP)
 5. Copy syntax pada file `init.sql` dan jalankan di phpmyadmin.
 6. Install requirements library:
    ```
@@ -61,7 +61,7 @@ Manual program berisikan cara penggunaan web yang dapat dilihat pada file `manua
 Data untuk mencoba sistem:
 [Klik untuk Unduh Data](https://drive.google.com/drive/folders/16UQujsiP80QSte23-4mEruWhwe4uFSh1?usp=sharing)
 
-## Cara Instalasi XAMPP <img src="https://seeklogo.com/images/X/xampp-logo-1C1A9E3689-seeklogo.com.png" width="33">
+## Cara Instalasi XAMPP
 
 1. Buka website <https://www.apachefriends.org/>
 2. Unduh XAMPP sesuai dengan sistem operasi yang digunakan.
