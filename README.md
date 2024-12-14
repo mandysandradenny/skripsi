@@ -20,7 +20,7 @@ Sistem berbasis web yang dirancang untuk memberikan informasi manajemen inventor
 ## Cara Instalasi Program 💻
 1. Clone repositori:
    ```
-   git clone https://github.com/mandysandradenny/skripsi;
+   git clone https://github.com/mandysandradenny/skripsi
    ```
 2. Buka folder repositori 'skripsi' di VSCode.
 3. Buat dan aktifkan virtual environment di VSCode:
@@ -47,12 +47,34 @@ Sistem berbasis web yang dirancang untuk memberikan informasi manajemen inventor
    - Masukkan username dan password yang diinginkan `register_user('admin', 'admin')`
    - Jalankan file `regist.py`
    - Comment kembali code `register_user('username', 'password')`
-8. Jalankan sistem:
+   - Melakukan pengecekan user berhasil terdaftar:
+     + Buka database `skripsi` pada phpMyAdmin.
+     + Klik tabel `user`
+     + Username yang didaftarkan akan tampil sebagai value pada tabel.
+8. Jalankan sistem pada virtual environment `venv`:
    ```
    python app.py
    ```
 9. Sistem sudah siap dan dapat diakses pada browser. <br>
-    🌐 <http://localhost:8080>
+    🌐 **<http://localhost:8080>**
+
+### Notes 📝
+Jika terdapat error seperti dibawah ini:
+```bash
+2024-12-14 18:32:06.889872: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results
+due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2024-12-14 18:32:08.340456: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results
+due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+ * Serving Flask app 'app'
+ * Debug mode: on
+An attempt was made to access a socket in a way forbidden by its access permissions
+```
+Maka ubah port **8080** pada file `app.py` baris 134-135
+```js
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
+```
+Jalankan sistem dengan port yang telah diubah **<http://localhost:5000>**
 
 ## Manual Program 📖
 Manual program berisikan cara penggunaan web yang dapat dilihat pada file `manual_program.pdf` <br>
@@ -62,7 +84,6 @@ Data untuk mencoba sistem:
 [Klik untuk Unduh Data](https://drive.google.com/drive/folders/16UQujsiP80QSte23-4mEruWhwe4uFSh1?usp=sharing)
 
 ## Cara Instalasi XAMPP
-
 1. Buka website <https://www.apachefriends.org/>
 2. Unduh XAMPP sesuai dengan sistem operasi yang digunakan.
 3. Jalankan file instalasi (**pastikan Apache dan MySQL dicentang**)
