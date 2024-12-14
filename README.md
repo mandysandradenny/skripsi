@@ -22,7 +22,7 @@ Sistem berbasis web yang dirancang untuk memberikan informasi manajemen inventor
    ```
    git clone https://github.com/mandysandradenny/skripsi
    ```
-2. Buka folder repositori 'skripsi' di VSCode.
+2. Buka folder repositori `skripsi` dengan VSCode.
 3. Buat dan aktifkan virtual environment pada terminal:
    ```
    python -m venv venv
